@@ -1,0 +1,38 @@
+<section class="comma comma-imgcta">
+  <div class="comma-imgcta__media">
+    {% if section.settings.image %}
+      {{ section.settings.image | image_url: width: 1800 | image_tag:
+         loading:'lazy', widths:'600,900,1200,1600,1800', sizes:'100vw', alt: section.settings.title }}
+    {% endif %}
+    <div class="comma-imgcta__overlay"></div>
+    <div class="comma-imgcta__content">
+      {% if section.settings.title != blank %}
+        <h2 class="comma-imgcta__title">{{ section.settings.title }}</h2>
+      {% endif %}
+      {% if section.settings.text != blank %}
+        <p class="comma-imgcta__text">{{ section.settings.text }}</p>
+      {% endif %}
+      {% if section.settings.cta_text != blank %}
+        <a class="comma-imgcta__cta" href="{{ section.settings.cta_link | default: '#' }}">
+          {{ section.settings.cta_text }}
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </a>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Comma Image + CTA",
+  "tag": "section",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Image" },
+    { "type": "text", "id": "title", "label": "Title", "default": "Football's greatest moments — made timeless." },
+    { "type": "textarea", "id": "text", "label": "Text", "default": "We turn your favourite football moments into pieces designed and crafted to last forever." },
+    { "type": "text", "id": "cta_text", "label": "Button text", "default": "Shop All" },
+    { "type": "url", "id": "cta_link", "label": "Button link" }
+  ],
+  "presets": [{ "name": "Comma Image + CTA" }]
+}
+{% endschema %}

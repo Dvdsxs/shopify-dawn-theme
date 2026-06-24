@@ -1,0 +1,40 @@
+<section class="comma comma-hero" style="--hero-h: {{ section.settings.height }}px">
+  <div class="comma-hero__media">
+    {% if section.settings.image %}
+      {{ section.settings.image | image_url: width: 1800 | image_tag:
+         loading: 'eager', fetchpriority:'high', widths:'600,900,1200,1600,1800',
+         sizes:'100vw', alt: section.settings.title }}
+    {% endif %}
+    <div class="comma-hero__overlay"></div>
+    <div class="comma-hero__content">
+      {% if section.settings.title != blank %}
+        <h1 class="comma-hero__title">{{ section.settings.title }}</h1>
+      {% endif %}
+      {% if section.settings.subtitle != blank %}
+        <p class="comma-hero__subtitle">{{ section.settings.subtitle }}</p>
+      {% endif %}
+      {% if section.settings.cta_text != blank %}
+        <a class="comma-hero__cta" href="{{ section.settings.cta_link | default: '#' }}">
+          {{ section.settings.cta_text }}
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </a>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Comma Hero",
+  "tag": "section",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Background image" },
+    { "type": "text", "id": "title", "label": "Title", "default": "WORLD CUP HERITAGE" },
+    { "type": "textarea", "id": "subtitle", "label": "Subtitle", "default": "The entire history of the World Cup, in one collection. Available now." },
+    { "type": "text", "id": "cta_text", "label": "Button text", "default": "Shop Now" },
+    { "type": "url", "id": "cta_link", "label": "Button link" },
+    { "type": "range", "id": "height", "label": "Min height (px, desktop)", "min": 400, "max": 900, "step": 20, "default": 640 }
+  ],
+  "presets": [{ "name": "Comma Hero" }]
+}
+{% endschema %}

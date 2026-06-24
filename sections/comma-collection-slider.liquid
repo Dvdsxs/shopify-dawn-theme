@@ -1,0 +1,48 @@
+{%- assign coll = collections[section.settings.collection] -%}
+<section class="comma comma-section {% if section.settings.dark %}comma-section--dark{% endif %}">
+  <div class="comma-section__head">
+    <h2 class="comma-section__title">{{ section.settings.heading | default: coll.title }}</h2>
+    {% if coll != blank %}
+      <a href="{{ coll.url }}" class="comma-section__link">View All</a>
+    {% endif %}
+  </div>
+
+  <div class="comma-slider" data-comma-slider>
+    <button class="comma-slider__btn comma-slider__btn--prev" aria-label="Previous">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg>
+    </button>
+    <div class="comma-slider__track">
+      {%- assign limit = section.settings.product_limit | default: 8 -%}
+      {% for p in coll.products limit: limit %}
+        <div class="comma-slider__slide">
+          {% render 'comma-product-card', product: p %}
+        </div>
+      {% else %}
+        {% for i in (1..4) %}
+          <div class="comma-slider__slide">
+            {% render 'comma-product-card', product: placeholder %}
+          </div>
+        {% endfor %}
+      {% endfor %}
+    </div>
+    <button class="comma-slider__btn comma-slider__btn--next" aria-label="Next">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg>
+    </button>
+  </div>
+</section>
+
+<script src="{{ 'comma-slider.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "Comma Collection Slider",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Best Sellers" },
+    { "type": "collection", "id": "collection", "label": "Collection" },
+    { "type": "range", "id": "product_limit", "label": "Products to show", "min": 4, "max": 16, "step": 1, "default": 8 },
+    { "type": "checkbox", "id": "dark", "label": "Dark background", "default": false }
+  ],
+  "presets": [{ "name": "Comma Collection Slider" }]
+}
+{% endschema %}

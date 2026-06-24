@@ -1,0 +1,31 @@
+{%- liquid
+  assign p = product
+  assign on_sale = false
+  if p.compare_at_price > p.price
+    assign on_sale = true
+    assign diff = p.compare_at_price | minus: p.price
+    assign pct = diff | times: 100.0 | divided_by: p.compare_at_price | round
+  endif
+-%}
+<a href="{{ p.url }}" class="comma-card">
+  <div class="comma-card__media">
+    {% if on_sale %}<span class="comma-card__badge">{{ pct }}% OFF</span>{% endif %}
+    {% if p.tags contains 'licensed' %}<span class="comma-card__tag" {% if on_sale %}style="left:4.6rem"{% endif %}>Licensed</span>{% endif %}
+    {% if p.featured_media %}
+      {{ p.featured_media | image_url: width: 800 | image_tag:
+        loading: 'lazy', widths: '300,450,600,800', sizes: '(min-width:750px) 32vw, 80vw', alt: p.featured_media.alt | default: p.title }}
+    {% endif %}
+  </div>
+  <div class="comma-card__body">
+    {% if p.vendor != blank %}<p class="comma-card__vendor">{{ p.vendor }}</p>{% endif %}
+    <h3 class="comma-card__title">{{ p.title }}</h3>
+    <div class="comma-card__price">
+      {% if on_sale %}
+        <span class="comma-card__price--sale">{{ p.price | money }}</span>
+        <span class="comma-card__price--compare">{{ p.compare_at_price | money }}</span>
+      {% else %}
+        <span>{{ p.price | money }}</span>
+      {% endif %}
+    </div>
+  </div>
+</a>

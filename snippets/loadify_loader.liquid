@@ -1,0 +1,450 @@
+
+        {% assign preloaderShow = 0 %}{% assign preloaderMode = 0 %} {% assign preloaderTime = "2000" %}{% assign litePreloader = 0 %}{% if litePreloader == 0 %}<script>function iOS() {return ["iPad Simulator","iPhone Simulator","iPod Simulator","iPad","iPhone","iPod"].includes(navigator.platform)|| (navigator.userAgent.includes("Mac") && "ontouchend" in document)}</script>{% endif %}{% assign pageTransitionSound = 0 %}{% assign pageTransition = 0 %}{% assign transitionPos = 0 %}{% assign fadeOutSpeed = 1 %} {% comment %} 0 - Slow | 1 - Fast {% endcomment %}{% assign endTrans = 1 %}{% assign transitionColor = "#ffffff" %}{% assign preloaderColor = "#ffffff" %}{% assign preloaderSize = "350" %}{% assign preloaderImageURL = "https://cdn.shopify.com/s/files/1/0768/1123/9755/t/1/assets/loadify_image.png?v=1700147916" %}{% assign imageAnimation = 1 %}
+    
+        {% if litePreloader == 1 %} <script async src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> {% assign pageTransition = 0 %}{% if fadeOutSpeed == 0 %} {% assign litePreloaderFadeOut = 800 %} {% else %} {% assign litePreloaderFadeOut = 400 %} {% endif %}{% else %}<script async src="{{ 'lAnimations.min.js' | asset_url }}"></script>{% endif %} <script>async function checkLoadify(){const response = await fetch("{{ shop.secure_url }}/a/n9LoadifyRequests?shop=8116d7.myshopify.com&t=9504");if (!response.ok) {removeLoadify();throw new Error(`Status: Fetch Failed - Loadify Preloader`);}const answer = await response.json();if(!answer.code){removeLoadify();}}function removeLoadify(){if(document.getElementById("loadify_loader") !== null){document.getElementById("loadify_loader").remove();}hideOverlayiOS(); console.error("Loadify Preloader app is uninstalled, but the app code is not removed -- https://apps.shopify.com/loadify");}checkLoadify();</script>
+        {% if imageAnimation > 0 %}{% case imageAnimation %}{% when 1 %} {% assign cssImageAnimation = "@-webkit-keyframes loadify_animation {from {opacity: 1.0;}to {opacity: 0.0;}}.loadify_animation {animation-name: loadify_animation;animation-duration: 0.6s;animation-iteration-count:infinite;animation-timing-function:ease-in-out;animation-direction: alternate;-webkit-animation-name: loadify_animation;-webkit-animation-duration: 0.6s;-webkit-animation-iteration-count:infinite;-webkit-animation-timing-function:ease-in-out;-webkit-animation-direction: alternate;-moz-animation-name: loadify_animation;-moz-animation-duration: 0.6s;-moz-animation-iteration-count:infinite;-moz-animation-timing-function:ease-in-out;-moz-animation-direction: alternate;-o-animation-name: loadify_animation;-o-animation-duration: 0.6s;-o-animation-iteration-count:infinite;-o-animation-timing-function:ease-in-out;-o-animation-direction: alternate;}" %}{% when 2 %} {% assign cssImageAnimation = ".loadify_animation {-moz-animation: loadify_animation 1s infinite ;-o-animation: loadify_animation 1s infinite ;-webkit-animation: loadify_animation 1s infinite ;animation: loadify_animation 1s infinite ;}@keyframes loadify_animation {0% {transform: scale(1,1);}50% {transform: scale(1.8,1.8);}100% {transform: scale(1,1);}}" %}{% when 3 %} {% assign cssImageAnimation = ".loadify_animation {-moz-animation: loadify_animation 1.2s infinite linear;-o-animation: loadify_animation 1.2s infinite linear;    -webkit-animation: loadify_animation 1.2s infinite linear;animation: loadify_animation 1.2s infinite linear;}@-webkit-keyframes loadify_animation {0% { -webkit-transform: rotateY(0deg); }100% { -webkite-transform: rotateY(360deg); }}@keyframes loadify_animation {0% { transform: rotateY(0deg); }100% { transform: rotateY(360deg); }}" %}{% when 4 %} {% assign cssImageAnimation = ".loadify_animation {-moz-animation: loadify_animation 1.2s infinite linear;-o-animation: loadify_animation 1.2s infinite linear;    -webkit-animation: loadify_animation 1.2s infinite linear;animation: loadify_animation 1.2s infinite linear;}@keyframes loadify_animation {0% { transform: rotateX(0deg); }100% { transform: rotateX(360deg); }}" %}{% when 5 %} {% assign cssImageAnimation = ".loadify_animation {-moz-animation: loadify_animation 1.2s infinite linear;-o-animation: loadify_animation 1.2s infinite linear;    -webkit-animation: loadify_animation 1.2s infinite linear;animation: loadify_animation 1.2s infinite linear;}@keyframes loadify_animation {100% { transform: rotate(360deg); }}" %}{% endcase %}{% endif %}<style>{{ cssImageAnimation }}</style><div id="loadify_loader" class="loadify_loader"><img loading="lazy" src="{{ preloaderImageURL }}" id="loadify_img" class="loadify_img {% if imageAnimation > 0 %}loadify_animation{% endif %}"></div>
+        <style>
+            .loadify_loader
+            {
+                background: {% if pageTransition > 0 %}transparent;{% else %}{{ preloaderColor }};{% endif %}
+                z-index: 2147483647;
+                top: 0;
+                left: 0;
+                position: fixed;
+                height: 100vh;
+                height: calc(var(--vhLoadify, 1vh) * 100);
+                width: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                -webkit-perspective:800px;
+                -o-perspective:800px;
+                -moz-perspective:800px;
+                -ms-perspective:800px;
+                perspective:800px;
+            }
+            
+            .loadify_img
+            {
+                width: {{ preloaderSize }}px;
+            }
+        </style>
+        <script>
+            let vhLoadify = window.innerHeight * 0.01;
+            document.documentElement.style.setProperty("--vhLoadify", `${vhLoadify}px`);
+        </script>
+
+        {% if pageTransition == 3 %}<div id="brandify_transition" class="brandify-overlay"><div style="display: none;"></div></div><div id="brandify_transition2" class="brandify-overlay2"><div style="display: none;"></div></div><div id="brandify_transition3" class="brandify-overlay3"><div style="display: none;"></div></div><div id="brandify_transition4" class="brandify-overlay4"><div style="display: none;"></div></div><div id="brandify_transition5" class="brandify-overlay5"><div style="display: none;"></div></div><div id="brandify_transition6" class="brandify-overlay6"><div style="display: none;"></div></div>{% elsif pageTransition == 4 %}<div id="brandify_transition" class="brandify-overlay"><div style="display: none;"></div></div><div id="brandify_transition2" class="brandify-overlay2"><div style="display: none;"></div></div>{% else %}<div id="brandify_transition" class="brandify-overlay"><div style="display: none;"></div></div>{% endif %}
+
+        {% assign cssContent = "" %}
+        {% if pageTransition > 0 %}
+            {% case pageTransition %}
+            {% when 1 %} 
+                {% case transitionPos %} 
+                {% when 0 %} {% assign cssContent = ".brandify-overlay{background-color: " | append: transitionColor | append: ";z-index: 2147483646;top: 0;left: 0;position: fixed;display: flex;height: 100vh;  width: 100%;}" %}
+                {% when 1 %} {% assign cssContent = ".brandify-overlay{background-color: " | append: transitionColor | append: ";z-index: 2147483646;top: 0;position: fixed;display: flex;height: 100vh; width: 100%;}" %}
+                {% when 2 %} {% assign cssContent = ".brandify-overlay{background-color: " | append: transitionColor | append: ";z-index: 2147483646;top: 0; right: 0;position: fixed;display: flex;height: 100vh; width: 100%;}" %}
+                {% when 3 %} {% assign cssContent = ".brandify-overlay{background-color: " | append: transitionColor | append: ";z-index: 2147483646;position: fixed;display: flex;height: 100%; width: 100%;}" %}
+                {% endcase %}
+            
+            {% when 2 %} 
+                {% case transitionPos %} 
+                {% when 0 %} {% assign cssContent = ".brandify-overlay{background-color: " | append: transitionColor | append: ";z-index: 2147483646;left: 0;position: fixed;display: flex;width: 100%;height: 100%;}" %}
+                {% when 1 %} {% assign cssContent = ".brandify-overlay{background-color: " | append: transitionColor | append: ";z-index: 2147483646;left: 51%;transform: translateX(-51%);top: 0;bottom: 0;position: fixed;display: flex;width: 101%;height: 100%;}" %}
+                {% when 2 %} {% assign cssContent = ".brandify-overlay{background-color: " | append: transitionColor | append: ";z-index: 2147483646;right: 0;position: fixed;display: flex;width: 100%;height: 100%;}" %}
+                {% when 3 %} {% assign cssContent = ".brandify-overlay{background-color: " | append: transitionColor | append: ";z-index: 2147483646;left: 51%;transform: translateX(-51%);bottom: 0;position: fixed;display: flex;width: 101%;height: 100%;}" %}
+                {% endcase %}
+            
+            {% when 3 %} 
+                {% case transitionPos %} 
+                {% when 0 %} {% assign cssContent = ".brandify-overlay{background-color: " | append: transitionColor | append: ";z-index: 2147483646;left: 0%;top: 20%;/*transform: translateY(-18%);*/position: fixed;display: flex;width: 100%;height: 20%;}.brandify-overlay2{background-color: " | append: transitionColor | append: ";z-index: 2147483646;top: 0;/*transform: translateY(-20%);*/position: fixed;display: flex;width: 100%;height: 20%;}.brandify-overlay3{background-color: " | append: transitionColor | append: ";z-index: 2147483646;top: 40%;/*transform: translateY(-40%);*/bottom: 0;position: fixed;display: flex;width: 100%;height: 20%;}.brandify-overlay4{background-color: " | append: transitionColor | append: ";z-index: 2147483646;top: 60%;/*transform: translateY(-60%);*/bottom: 0;position: fixed;display: flex;width: 100%;height: 20%;}.brandify-overlay5{background-color: " | append: transitionColor | append: ";z-index: 2147483646;top: 80%;/*transform: translateY(-80%);*/bottom: 0;position: fixed;display: flex;width: 100%;height: 20%;}.brandify-overlay6{background-color: " | append: transitionColor | append: ";z-index: 2147483646;top: 100%;/*transform: translateY(-100%);*/bottom: 0;position: fixed;display: flex;width: 100%;height: 20%;}" %}
+                {% when 1 %} {% assign cssContent = ".brandify-overlay{background-color: " | append: transitionColor | append: ";z-index: 2147483646;left: 0%;top: 0;bottom: 0;position: fixed;display: flex;width: 20%;height: 100%;}.brandify-overlay2{background-color: " | append: transitionColor | append: ";z-index: 2147483646;left: 20%;/*transform: translateX(-20%);*/top: 0;bottom: 0;position: fixed;display: flex;width: 20%;height: 100%;}.brandify-overlay3{background-color: " | append: transitionColor | append: ";z-index: 2147483646;left: 40%;/*transform: translateX(-40%);*/top: 0;bottom: 0;position: fixed;display: flex;width: 20%;height: 100%;}.brandify-overlay4{background-color: " | append: transitionColor | append: ";z-index: 2147483646;left: 60%;/*transform: translateX(-60%);*/top: 0;bottom: 0;position: fixed;display: flex;width: 20%;height: 100%;}.brandify-overlay5{background-color: " | append: transitionColor | append: ";z-index: 2147483646;left: 80%;/*transform: translateX(-80%);*/top: 0;bottom: 0;position: fixed;display: flex;width: 20%;height: 100%;}.brandify-overlay6{background-color: " | append: transitionColor | append: ";z-index: 2147483646;left: 100%;/*transform: translateX(-100%);*/top: 0;bottom: 0;position: fixed;display: flex;width: 20%;height: 100%;}" %}
+                {% when 2 %} {% assign cssContent = ".brandify-overlay{background-color: " | append: transitionColor | append: ";z-index: 2147483646;top: 20%;/*transform: translateY(-18%);*/position: fixed;display: flex;width: 100%;height: 20%;}.brandify-overlay2{background-color: " | append: transitionColor | append: ";z-index: 2147483646;top: 0;/*transform: translateY(-20%);*/position: fixed;display: flex;width: 100%;height: 20%;}.brandify-overlay3{background-color: " | append: transitionColor | append: ";z-index: 2147483646;top: 40%;/*transform: translateY(-40%);*/bottom: 0;position: fixed;display: flex;width: 100%;height: 20%;}.brandify-overlay4{background-color: " | append: transitionColor | append: ";z-index: 2147483646;top: 60%;/*transform: translateY(-60%);*/bottom: 0;position: fixed;display: flex;width: 100%;height: 20%;}.brandify-overlay5{background-color: " | append: transitionColor | append: ";z-index: 2147483646;top: 80%;/*transform: translateY(-80%);*/bottom: 0;position: fixed;display: flex;width: 100%;height: 20%;}.brandify-overlay6{background-color: " | append: transitionColor | append: ";z-index: 2147483646;top: 100%;/*transform: translateY(-100%);*/bottom: 0;position: fixed;display: flex;width: 100%;height: 20%;}" %}
+                {% when 3 %} {% assign cssContent = ".brandify-overlay{background-color: " | append: transitionColor | append: ";z-index: 2147483646;left: 0%;bottom: 0;position: fixed;display: flex;width: 20%;height: 100%;}.brandify-overlay2{background-color: " | append: transitionColor | append: ";z-index: 2147483646;left: 20%;/*transform: translateX(-20%);*/bottom: 0;position: fixed;display: flex;width: 20%;height: 100%;}.brandify-overlay3{background-color: " | append: transitionColor | append: ";z-index: 2147483646;left: 40%;/*transform: translateX(-40%);*/bottom: 0;position: fixed;display: flex;width: 20%;height: 100%;}.brandify-overlay4{background-color: " | append: transitionColor | append: ";z-index: 2147483646;left: 60%;/*transform: translateX(-60%);*/bottom: 0;position: fixed;display: flex;width: 20%;height: 100%;}.brandify-overlay5{background-color: " | append: transitionColor | append: ";z-index: 2147483646;left: 80%;/*transform: translateX(-80%);*/bottom: 0;position: fixed;display: flex;width: 20%;height: 100%;}.brandify-overlay6{background-color: " | append: transitionColor | append: ";z-index: 2147483646;left: 100%;/*transform: translateX(-100%);*/bottom: 0;position: fixed;display: flex;width: 20%;height: 100%;}" %}
+                {% endcase %}
+            
+            {% when 4 %} 
+                {% case transitionPos %} 
+                {% when 0 %} {% assign cssContent = ".brandify-overlay{background-color: " | append: transitionColor | append: ";z-index: 2147483646;left: 0;top: 0;bottom: 0;position: fixed;display: flex;height: 100vh; width: 50%;}.brandify-overlay2{background-color: " | append: transitionColor | append: ";z-index: 2147483646;right: 0;top: 0;bottom: 0;position: fixed;display: flex;height: 100vh; width: 50%;}" %}
+                {% when 1 %} {% assign cssContent = ".brandify-overlay{background-color: " | append: transitionColor | append: ";z-index: 2147483646;left: 0;top: 0;bottom: 0;position: fixed;display: flex;height: 50vh; width: 100%;}.brandify-overlay2{background-color: " | append: transitionColor | append: ";z-index: 2147483646;right: 0;bottom: 0;position: fixed;display: flex;height: 50vh; width: 100%;}" %}
+                {% when 2 %} {% assign cssContent = ".brandify-overlay{background-color: " | append: transitionColor | append: ";z-index: 2147483646;left: 0;top: 0;bottom: 0;position: fixed;display: flex;height: 100vh; width: 50%;}.brandify-overlay2{background-color: " | append: transitionColor | append: ";z-index: 2147483646;right: 0;top: 0;bottom: 0;position: fixed;display: flex;height: 100vh; width: 50%;}" %}
+                {% when 3 %} {% assign cssContent = ".brandify-overlay{background-color: " | append: transitionColor | append: ";z-index: 2147483646;left: 0;top: 0;bottom: 0;position: fixed;display: flex;height: 50vh; width: 100%;}.brandify-overlay2{background-color: " | append: transitionColor | append: ";z-index: 2147483646;right: 0;bottom: 0;position: fixed;display: flex;height: 50vh; width: 100%;}" %}
+                {% endcase %}
+            {% endcase %}
+        {% endif %}
+        <style>{{ cssContent }}</style>
+    
+        <script>
+            {% if preloaderShow == 1 %}
+                if (sessionStorage.getItem('loadify_loader')) 
+                {
+                    document.getElementById('loadify_loader').remove();
+                    {% if pageTransition > 0 %}
+                        if(document.getElementById('brandify_transition') !== null) document.getElementById('brandify_transition').remove();
+                        if(document.getElementById('brandify_transition2') !== null) document.getElementById('brandify_transition2').remove();
+                        if(document.getElementById('brandify_transition3') !== null) document.getElementById('brandify_transition3').remove();
+                        if(document.getElementById('brandify_transition4') !== null) document.getElementById('brandify_transition4').remove();
+                        if(document.getElementById('brandify_transition5') !== null) document.getElementById('brandify_transition5').remove();
+                        if(document.getElementById('brandify_transition6') !== null) document.getElementById('brandify_transition6').remove();
+                    {% endif %}
+                }
+            {% elsif preloaderShow == 2 %}
+                {% if template contains 'product' %}
+                    if (sessionStorage.getItem('loadify_loader_{{ template }}_{{ product.id }}')) 
+                    {
+                        document.getElementById('loadify_loader').remove();
+                        {% if pageTransition > 0 %}
+                            if(document.getElementById('brandify_transition') !== null) document.getElementById('brandify_transition').remove();
+                            if(document.getElementById('brandify_transition2') !== null) document.getElementById('brandify_transition2').remove();
+                            if(document.getElementById('brandify_transition3') !== null) document.getElementById('brandify_transition3').remove();
+                            if(document.getElementById('brandify_transition4') !== null) document.getElementById('brandify_transition4').remove();
+                            if(document.getElementById('brandify_transition5') !== null) document.getElementById('brandify_transition5').remove();
+                            if(document.getElementById('brandify_transition6') !== null) document.getElementById('brandify_transition6').remove();
+                        {% endif %}
+                    }
+                {% else %}
+                    if (sessionStorage.getItem('loadify_loader_{{ template }}'))
+                    {
+                        document.getElementById('loadify_loader').remove();
+                        {% if pageTransition > 0 %}
+                            if(document.getElementById('brandify_transition') !== null) document.getElementById('brandify_transition').remove();
+                            if(document.getElementById('brandify_transition2') !== null) document.getElementById('brandify_transition2').remove();
+                            if(document.getElementById('brandify_transition3') !== null) document.getElementById('brandify_transition3').remove();
+                            if(document.getElementById('brandify_transition4') !== null) document.getElementById('brandify_transition4').remove();
+                            if(document.getElementById('brandify_transition5') !== null) document.getElementById('brandify_transition5').remove();
+                            if(document.getElementById('brandify_transition6') !== null) document.getElementById('brandify_transition6').remove();
+                        {% endif %}
+                    }
+                {% endif %}
+            {% endif %}
+
+            {% if litePreloader == 0 %}
+                {% assign hideTransIos = '' %} {% assign hideTrans = '' %} {% assign hideTrans2 = '' %} {% assign showTrans = '' %}
+            
+                {% if pageTransition > 0 %}
+                    {% case pageTransition %}
+                    
+                    {% when 1 %} 
+                        {% case transitionPos %} 
+                        {% when 0 %} 
+                            {% assign hideTransIos = "gsap.to('#brandify_transition', { opacity: 0, ease: Power2.easeInOut, duration: durration_end_trans, delay: delay_start, onComplete:hideOverlayiOS});" %} 
+                            {% assign hideTrans = "gsap.to('#brandify_transition', { left: 0, width: '0%', ease: Power2.easeInOut, duration: 0, delay: 0});gsap.to('#brandify_transition', { left: 0, width: '100%', ease: Power2.easeInOut, duration: 0, delay: 0});gsap.to('#brandify_transition', { left: 0, width: '0%', ease: Power2.easeInOut, duration: durration_end_trans, delay: delay_start});" %} 
+                            {% assign hideTrans2 = "gsap.to('#brandify_transition', { left: 0, width: '0%', ease: Power4.easeNone, duration: 0, delay: 1.7});" %} 
+                            {% assign showTrans = "gsap.to('#brandify_transition', { left: 0, width: '100%', ease: Power2.easeInOut, duration: 1.5, delay: 0, onComplete:hideOverlay});" %}
+                        
+                        {% when 1 %} 
+                            {% assign hideTransIos = "gsap.to('#brandify_transition', { opacity: 0, ease: Power2.easeInOut, duration: durration_end_trans, delay: delay_start, onComplete:hideOverlayiOS});" %} 
+                            {% assign hideTrans = "gsap.to('#brandify_transition', {height: '0vh', ease: Power2.easeInOut, duration: 0, delay: 0});gsap.to('#brandify_transition', {height: '100vh', ease: Power2.easeInOut, duration: 0, delay: 0});gsap.to('#brandify_transition', {height: '0vh', ease: Power2.easeInOut, duration: durration_end_trans, delay: delay_start});" %} 
+                            {% assign hideTrans2 = "gsap.to('#brandify_transition', {height: 0, ease: Power4.easeNone, duration: 0, delay: 1.7});" %} 
+                            {% assign showTrans = "gsap.to('#brandify_transition', {height: '100vh', ease: Power2.easeInOut, duration: 1.5, delay: 0, onComplete:hideOverlay});" %}
+                        
+                        {% when 2 %} 
+                            {% assign hideTransIos = "gsap.to('#brandify_transition', { opacity: 0, ease: Power2.easeInOut, duration: durration_end_trans, delay: delay_start, onComplete:hideOverlayiOS});" %} 
+                            {% assign hideTrans = "gsap.to('#brandify_transition', { right: 0, width: '0%', ease: Power2.easeInOut, duration: 0, delay: 0});gsap.to('#brandify_transition', { right: 0, width: '100%', ease: Power2.easeInOut, duration: 0, delay: 0});gsap.to('#brandify_transition', { right: 0, width: '0%', ease: Power2.easeInOut, duration: durration_end_trans, delay: delay_start});" %} 
+                            {% assign hideTrans2 = "gsap.to('#brandify_transition', { right: 0, width: '0%', ease: Power4.easeNone, duration: 0, delay: 1.7});" %} 
+                            {% assign showTrans = "gsap.to('#brandify_transition', { right: 0, width: '100%', ease: Power2.easeInOut, duration: 1.5, delay: 0, onComplete:hideOverlay});" %}
+                        
+                        {% when 3 %} 
+                            {% assign hideTransIos = "gsap.to('#brandify_transition', { opacity: 0, ease: Power2.easeInOut, duration: durration_end_trans, delay: delay_start, onComplete:hideOverlayiOS});" %} 
+                            {% assign hideTrans = "gsap.to('#brandify_transition', {height: '0%', bottom: 0, ease: Power2.easeInOut, duration: 0, delay: 0});gsap.to('#brandify_transition', {height: '100%', bottom: 0, ease: Power2.easeInOut, duration: 0, delay: 0});gsap.to('#brandify_transition', {height: '0%', bottom: 0, ease: Power2.easeInOut, duration: durration_end_trans, delay: delay_start});" %} 
+                            {% assign hideTrans2 = "gsap.to('#brandify_transition', {height: '0%', bottom: 0, ease: Power4.easeNone, duration: 0, delay: 1.7});" %} 
+                            {% assign showTrans = "gsap.to('#brandify_transition', {height: '100%', bottom: 0, ease: Power2.easeInOut, duration: 1.5, delay: 0, onComplete:hideOverlay});" %}
+                        {% endcase %}
+
+
+                    
+                    {% when 2 %}
+                        {% case transitionPos %} 
+                            {% when 0 %} 
+                            {% assign hideTransIos = "gsap.to('#brandify_transition', { opacity: 0, ease: Power2.easeInOut, duration: durration_end_trans, delay: delay_start, onComplete:hideOverlayiOS});" %} 
+                            {% assign hideTrans = "gsap.to('#brandify_transition', {borderRadius: '0% 400% 400% 0%', left: '0', width: '0%', height: '100%', duration: 0, ease: Power2.easeInOut, delay: 0});gsap.to('#brandify_transition', {borderRadius: '0% 400% 400% 0%', left: '0', width: '200%', height: '100%', duration: 0, ease: Power2.easeInOut, delay: 0});gsap.to('#brandify_transition', {borderRadius: '0% 400% 400% 0%', left: '0', width: '0%', height: '100%', duration: durration_end_trans, ease: Power2.easeInOut, delay: delay_start});" %} 
+                            {% assign hideTrans2 = "gsap.to('#brandify_transition', {borderRadius: '0% 400% 400% 0%', left: '0', width: '0%', height: '100%', duration: 0, ease: Power4.easeNone, delay: 1.7});" %} 
+                            {% assign showTrans = "gsap.to('#brandify_transition', {borderRadius: '0% 400% 400% 0%', left: '0', width: '200%', height: '100%', duration: durration_end_trans, ease: Power2.easeInOut, delay: 0});" %}
+                            
+                            {% when 1 %} 
+                            {% assign hideTransIos = "gsap.to('#brandify_transition', { opacity: 0, ease: Power2.easeInOut, duration: durration_end_trans, delay: delay_start, onComplete:hideOverlayiOS});" %} 
+                            {% assign hideTrans = "gsap.to('#brandify_transition', {borderRadius: '0% 0% 400% 400%', top:0, width: '100%', height: '0%', duration: 0, ease: Power2.easeInOut, delay: 0});gsap.to('#brandify_transition', {borderRadius: '0% 0% 400% 400%', top:0, width: '100%', height: '200%', duration: 0, ease: Power2.easeInOut, delay: 0});gsap.to('#brandify_transition', {borderRadius: '0% 0% 400% 400%', top:0, width: '100%', height: '0%', duration: durration_end_trans, ease: Power2.easeInOut, delay: delay_start});" %} 
+                            {% assign hideTrans2 = "gsap.to('#brandify_transition', {borderRadius: '0% 0% 400% 400%', top:0, width: '100%', height: '0%', duration: 0, ease: Power4.easeNone, delay: 1.7});" %} 
+                            {% assign showTrans = "gsap.to('#brandify_transition', {borderRadius: '0% 0% 400% 400%', top:0, width: '100%', height: '200%', duration: durration_end_trans, ease: Power2.easeInOut, delay: 0});" %}
+                            
+                            {% when 2 %} 
+                            {% assign hideTransIos = "gsap.to('#brandify_transition', { opacity: 0, ease: Power2.easeInOut, duration: durration_end_trans, delay: delay_start, onComplete:hideOverlayiOS});" %} 
+                            {% assign hideTrans = "gsap.to('#brandify_transition', {borderRadius: '400% 0% 0% 400%', right: '0', width: '0%', height: '100%', duration: 0, ease: Power2.easeInOut, delay: 0});gsap.to('#brandify_transition', {borderRadius: '400% 0% 0% 400%', right: '0', width: '200%', height: '100%', duration: 0, ease: Power2.easeInOut, delay: 0});gsap.to('#brandify_transition', {borderRadius: '400% 0% 0% 400%', right: '0', width: '0%', height: '100%', duration: durration_end_trans, ease: Power2.easeInOut, delay: delay_start});" %} 
+                            {% assign hideTrans2 = "gsap.to('#brandify_transition', {borderRadius: '400% 0% 0% 400%', right: '0', width: '0%', height: '100%', duration: 0, ease: Power4.easeNone, delay: 1.7});" %} 
+                            {% assign showTrans = "gsap.to('#brandify_transition', {borderRadius: '400% 0% 0% 400%', right: '0', width: '200%', height: '100%', duration: durration_end_trans, ease: Power2.easeInOut, delay: 0});" %}
+                            
+                            {% when 3 %} 
+                            {% assign hideTransIos = "gsap.to('#brandify_transition', { opacity: 0, ease: Power2.easeInOut, duration: durration_end_trans, delay: delay_start, onComplete:hideOverlayiOS});" %} 
+                            {% assign hideTrans = "gsap.to('#brandify_transition', {borderRadius: '400% 400% 0% 0%', bottom:0, width: '100%', height: '0%', duration: 0, ease: Power2.easeInOut, delay: 0});gsap.to('#brandify_transition', {borderRadius: '400% 400% 0% 0%', bottom:0, width: '100%', height: '200%', duration: 0, ease: Power2.easeInOut, delay: 0});gsap.to('#brandify_transition', {borderRadius: '400% 400% 0% 0%', bottom:0, width: '100%', height: '0%', duration: durration_end_trans, ease: Power2.easeInOut, delay: delay_start});" %} 
+                            {% assign hideTrans2 = "gsap.to('#brandify_transition', {borderRadius: '400% 400% 0% 0%', bottom:0, width: '100%', height: '0%', duration: 0, ease: Power4.easeNone, delay: 1.7});" %} 
+                            {% assign showTrans = "gsap.to('#brandify_transition', {borderRadius: '400% 400% 0% 0%', bottom:0, width: '100%', height: '200%', duration: durration_end_trans, ease: Power2.easeInOut, delay: 0});" %}
+                        {% endcase %}
+
+
+
+                
+                    {% when 3 %}
+                        {% case transitionPos %} 
+                            {% when 0 %} 
+                            {% assign hideTransIos = "gsap.to('#brandify_transition', { opacity: 0, ease: Power2.easeInOut, duration: durration_end_trans, delay: delay_start, onComplete:hideOverlayiOS});gsap.to('#brandify_transition2', { opacity: 0, ease: Power2.easeInOut, duration: durration_end_trans, delay: delay_start});gsap.to('#brandify_transition3', { opacity: 0, ease: Power2.easeInOut, duration: durration_end_trans, delay: delay_start});gsap.to('#brandify_transition4', { opacity: 0, ease: Power2.easeInOut, duration: durration_end_trans, delay: delay_start});gsap.to('#brandify_transition5', { opacity: 0, ease: Power2.easeInOut, duration: durration_end_trans, delay: delay_start});gsap.to('#brandify_transition6', { opacity: 0, ease: Power2.easeInOut, duration: durration_end_trans, delay: delay_start});" %} 
+                            {% assign hideTrans = "gsap.to('#brandify_transition', { left:0, width: '0%', duration: 0, ease: Power2.easeInOut, delay: 0}); gsap.to('#brandify_transition', { left:0, width: '100%', duration: 0, ease: Power2.easeInOut, delay: 0}); gsap.to('#brandify_transition', { left:0, width: '0%', duration: durration_end_trans, ease: Power2.easeInOut, delay: 0.4}); gsap.to('#brandify_transition2', { left:0, width: '0%', duration: 0, ease: Power2.easeInOut, delay: 0}); gsap.to('#brandify_transition2', { left:0, width: '100%', duration: 0, ease: Power2.easeInOut, delay: 0}); gsap.to('#brandify_transition2', { left:0, width: '0%', duration: durration_end_trans, ease: Power2.easeInOut, delay: 0.3}); gsap.to('#brandify_transition3', { left:0, width: '0%', duration: 0, ease: Power2.easeInOut, delay: 0}); gsap.to('#brandify_transition3', { left:0, width: '100%', duration: 0, ease: Power2.easeInOut, delay: 0}); gsap.to('#brandify_transition3', { left:0, width: '0%', duration: durration_end_trans, ease: Power2.easeInOut, delay: 0.5}); gsap.to('#brandify_transition4', { left:0, width: '0%', duration: 0, ease: Power2.easeInOut, delay: 0}); gsap.to('#brandify_transition4', { left:0, width: '100%', duration: 0, ease: Power2.easeInOut, delay: 0}); gsap.to('#brandify_transition4', { left:0, width: '0%', duration: durration_end_trans, ease: Power2.easeInOut, delay: 0.6}); gsap.to('#brandify_transition5', { left:0, width: '0%', duration: 0, ease: Power2.easeInOut, delay: 0}); gsap.to('#brandify_transition5', { left:0, width: '100%', duration: 0, ease: Power2.easeInOut, delay: 0}); gsap.to('#brandify_transition5', { left:0, width: '0%', duration: durration_end_trans, ease: Power2.easeInOut, delay: 0.7}); gsap.to('#brandify_transition6', { left:0, width: '0%', duration: 0, ease: Power2.easeInOut, delay: 0}); gsap.to('#brandify_transition6', { left:0, width: '100%', duration: 0, ease: Power2.easeInOut, delay: 0}); gsap.to('#brandify_transition6', { left:0, width: '0%', duration: durration_end_trans, ease: Power2.easeInOut, delay: 0.8}); " %} 
+                            {% assign hideTrans2 = "gsap.to('#brandify_transition', { left:0, width: '0%', duration: 0, ease: Power4.easeNone, delay: 1.7}); gsap.to('#brandify_transition2', { left:0, width: '0%', duration: 0, ease: Power4.easeNone, delay: 1.7}); gsap.to('#brandify_transition3', { left:0, width: '0%', duration: 0, ease: Power4.easeNone, delay: 1.7}); gsap.to('#brandify_transition4', { left:0, width: '0%', duration: 0, ease: Power4.easeNone, delay: 1.7}); gsap.to('#brandify_transition5', { left:0, width: '0%', duration: 0, ease: Power4.easeNone, delay: 1.7}); gsap.to('#brandify_transition6', { left:0, width: '0%', duration: 0, ease: Power4.easeNone, delay: 1.7}); " %} 
+                            {% assign showTrans = "gsap.to('#brandify_transition', { left: '0%', width: '100%', duration: durration_end_trans, ease: Power2.easeInOut, delay: 0.1}); gsap.to('#brandify_transition2', { left: '0%', width: '100%', duration: durration_end_trans, ease: Power2.easeInOut, delay: 0}); gsap.to('#brandify_transition3', { left: '0%', width: '100%', duration: durration_end_trans, ease: Power2.easeInOut, delay: 0.2}); gsap.to('#brandify_transition4', { left: '0%', width: '100%', duration: durration_end_trans, ease: Power2.easeInOut, delay: 0.3}); gsap.to('#brandify_transition5', { left: '0%', width: '100%', duration: durration_end_trans, ease: Power2.easeInOut, delay: 0.4}); gsap.to('#brandify_transition6', { left: '0%', width: '100%', duration: durration_end_trans, ease: Power2.easeInOut, delay: 0.5}); " %}
+                            
+                            {% when 1 %} 
+                            {% assign hideTransIos = "gsap.to('#brandify_transition', { opacity: 0, ease: Power2.easeInOut, duration: durration_end_trans, delay: delay_start, onComplete:hideOverlayiOS});gsap.to('#brandify_transition2', { opacity: 0, ease: Power2.easeInOut, duration: durration_end_trans, delay: delay_start});gsap.to('#brandify_transition3', { opacity: 0, ease: Power2.easeInOut, duration: durration_end_trans, delay: delay_start});gsap.to('#brandify_transition4', { opacity: 0, ease: Power2.easeInOut, duration: durration_end_trans, delay: delay_start});gsap.to('#brandify_transition5', { opacity: 0, ease: Power2.easeInOut, duration: durration_end_trans, delay: delay_start});gsap.to('#brandify_transition6', { opacity: 0, ease: Power2.easeInOut, duration: durration_end_trans, delay: delay_start});" %} 
+                            {% assign hideTrans = "gsap.to('#brandify_transition', { top:0, height: '0%', duration: 0, ease: Power2.easeInOut, delay: 0}); gsap.to('#brandify_transition', { top:0, height: '100%', duration: 0, ease: Power2.easeInOut, delay: 0}); gsap.to('#brandify_transition', { top:0, height: '0%', duration: durration_end_trans, ease: Power2.easeInOut, delay: 0.3}); gsap.to('#brandify_transition2', { top:0, height: '0%', duration: 0, ease: Power2.easeInOut, delay: 0}); gsap.to('#brandify_transition2', { top:0, height: '100%', duration: 0, ease: Power2.easeInOut, delay: 0}); gsap.to('#brandify_transition2', { top:0, height: '0%', duration: durration_end_trans, ease: Power2.easeInOut, delay: 0.4}); gsap.to('#brandify_transition3', { top:0, height: '0%', duration: 0, ease: Power2.easeInOut, delay: 0}); gsap.to('#brandify_transition3', { top:0, height: '100%', duration: 0, ease: Power2.easeInOut, delay: 0}); gsap.to('#brandify_transition3', { top:0, height: '0%', duration: durration_end_trans, ease: Power2.easeInOut, delay: 0.5}); gsap.to('#brandify_transition4', { top:0, height: '0%', duration: 0, ease: Power2.easeInOut, delay: 0}); gsap.to('#brandify_transition4', { top:0, height: '100%', duration: 0, ease: Power2.easeInOut, delay: 0}); gsap.to('#brandify_transition4', { top:0, height: '0%', duration: durration_end_trans, ease: Power2.easeInOut, delay: 0.6}); gsap.to('#brandify_transition5', { top:0, height: '0%', duration: 0, ease: Power2.easeInOut, delay: 0}); gsap.to('#brandify_transition5', { top:0, height: '100%', duration: 0, ease: Power2.easeInOut, delay: 0}); gsap.to('#brandify_transition5', { top:0, height: '0%', duration: durration_end_trans, ease: Power2.easeInOut, delay: 0.7}); gsap.to('#brandify_transition6', { top:0, height: '0%', duration: 0, ease: Power2.easeInOut, delay: 0}); gsap.to('#brandify_transition6', { top:0, height: '100%', duration: 0, ease: Power2.easeInOut, delay: 0}); gsap.to('#brandify_transition6', { top:0, height: '0%', duration: durration_end_trans, ease: Power2.easeInOut, delay: 0.8}); " %} 
+                            {% assign hideTrans2 = "gsap.to('#brandify_transition', { top:0, height: '0%', duration: 0, ease: Power4.easeNone, delay: 1.7}); gsap.to('#brandify_transition2', { top:0, height: '0%', duration: 0, ease: Power4.easeNone, delay: 1.7}); gsap.to('#brandify_transition3', { top:0, height: '0%', duration: 0, ease: Power4.easeNone, delay: 1.7}); gsap.to('#brandify_transition4', { top:0, height: '0%', duration: 0, ease: Power4.easeNone, delay: 1.7}); gsap.to('#brandify_transition5', { top:0, height: '0%', duration: 0, ease: Power4.easeNone, delay: 1.7}); gsap.to('#brandify_transition6', { top:0, height: '0%', duration: 0, ease: Power4.easeNone, delay: 1.7}); " %} 
+                            {% assign showTrans = "gsap.to('#brandify_transition', { top:0, height: '100%', duration: durration_end_trans, ease: Power2.easeInOut, delay: 0}); gsap.to('#brandify_transition2', { top:0, height: '100%', duration: durration_end_trans, ease: Power2.easeInOut, delay: 0.1}); gsap.to('#brandify_transition3', { top:0, height: '100%', duration: durration_end_trans, ease: Power2.easeInOut, delay: 0.2}); gsap.to('#brandify_transition4', { top:0, height: '100%', duration: durration_end_trans, ease: Power2.easeInOut, delay: 0.3}); gsap.to('#brandify_transition5', { top:0, height: '100%', duration: durration_end_trans, ease: Power2.easeInOut, delay: 0.4}); gsap.to('#brandify_transition6', { top:0, height: '100%', duration: durration_end_trans, ease: Power2.easeInOut, delay: 0.5}); " %}
+                            
+                            {% when 2 %} 
+                            {% assign hideTransIos = "gsap.to('#brandify_transition', { opacity: 0, ease: Power2.easeInOut, duration: durration_end_trans, delay: delay_start, onComplete:hideOverlayiOS});gsap.to('#brandify_transition2', { opacity: 0, ease: Power2.easeInOut, duration: durration_end_trans, delay: delay_start});gsap.to('#brandify_transition3', { opacity: 0, ease: Power2.easeInOut, duration: durration_end_trans, delay: delay_start});gsap.to('#brandify_transition4', { opacity: 0, ease: Power2.easeInOut, duration: durration_end_trans, delay: delay_start});gsap.to('#brandify_transition5', { opacity: 0, ease: Power2.easeInOut, duration: durration_end_trans, delay: delay_start});gsap.to('#brandify_transition6', { opacity: 0, ease: Power2.easeInOut, duration: durration_end_trans, delay: delay_start});" %} 
+                            {% assign hideTrans = "gsap.to('#brandify_transition', { right:0, width: '0%', duration: 0, ease: Power2.easeInOut, delay: 0}); gsap.to('#brandify_transition', { right:0, width: '100%', duration: 0, ease: Power2.easeInOut, delay: 0}); gsap.to('#brandify_transition', { right:0, width: '0%', duration: durration_end_trans, ease: Power2.easeInOut, delay: 0.4}); gsap.to('#brandify_transition2', { right:0, width: '0%', duration: 0, ease: Power2.easeInOut, delay: 0}); gsap.to('#brandify_transition2', { right:0, width: '100%', duration: 0, ease: Power2.easeInOut, delay: 0}); gsap.to('#brandify_transition2', { right:0, width: '0%', duration: durration_end_trans, ease: Power2.easeInOut, delay: 0.3}); gsap.to('#brandify_transition3', { right:0, width: '0%', duration: 0, ease: Power2.easeInOut, delay: 0}); gsap.to('#brandify_transition3', { right:0, width: '100%', duration: 0, ease: Power2.easeInOut, delay: 0}); gsap.to('#brandify_transition3', { right:0, width: '0%', duration: durration_end_trans, ease: Power2.easeInOut, delay: 0.5}); gsap.to('#brandify_transition4', { right:0, width: '0%', duration: 0, ease: Power2.easeInOut, delay: 0}); gsap.to('#brandify_transition4', { right:0, width: '100%', duration: 0, ease: Power2.easeInOut, delay: 0}); gsap.to('#brandify_transition4', { right:0, width: '0%', duration: durration_end_trans, ease: Power2.easeInOut, delay: 0.6}); gsap.to('#brandify_transition5', { right:0, width: '0%', duration: 0, ease: Power2.easeInOut, delay: 0}); gsap.to('#brandify_transition5', { right:0, width: '100%', duration: 0, ease: Power2.easeInOut, delay: 0}); gsap.to('#brandify_transition5', { right:0, width: '0%', duration: durration_end_trans, ease: Power2.easeInOut, delay: 0.7}); gsap.to('#brandify_transition6', { right:0, width: '0%', duration: 0, ease: Power2.easeInOut, delay: 0}); gsap.to('#brandify_transition6', { right:0, width: '100%', duration: 0, ease: Power2.easeInOut, delay: 0}); gsap.to('#brandify_transition6', { right:0, width: '0%', duration: durration_end_trans, ease: Power2.easeInOut, delay: 0.8}); " %} 
+                            {% assign hideTrans2 = "gsap.to('#brandify_transition', { right:0, width: '0%', duration: 0, ease: Power4.easeNone, delay: 1.7}); gsap.to('#brandify_transition2', { right:0, width: '0%', duration: 0, ease: Power4.easeNone, delay: 1.7}); gsap.to('#brandify_transition3', { right:0, width: '0%', duration: 0, ease: Power4.easeNone, delay: 1.7}); gsap.to('#brandify_transition4', { right:0, width: '0%', duration: 0, ease: Power4.easeNone, delay: 1.7}); gsap.to('#brandify_transition5', { right:0, width: '0%', duration: 0, ease: Power4.easeNone, delay: 1.7}); gsap.to('#brandify_transition6', { right:0, width: '0%', duration: 0, ease: Power4.easeNone, delay: 1.7}); " %} 
+                            {% assign showTrans = "gsap.to('#brandify_transition', { right: '0%', width: '100%', duration: durration_end_trans, ease: Power2.easeInOut, delay: 0.1}); gsap.to('#brandify_transition2', { right: '0%', width: '100%', duration: durration_end_trans, ease: Power2.easeInOut, delay: 0}); gsap.to('#brandify_transition3', { right: '0%', width: '100%', duration: durration_end_trans, ease: Power2.easeInOut, delay: 0.2}); gsap.to('#brandify_transition4', { right: '0%', width: '100%', duration: durration_end_trans, ease: Power2.easeInOut, delay: 0.3}); gsap.to('#brandify_transition5', { right: '0%', width: '100%', duration: durration_end_trans, ease: Power2.easeInOut, delay: 0.4}); gsap.to('#brandify_transition6', { right: '0%', width: '100%', duration: durration_end_trans, ease: Power2.easeInOut, delay: 0.5}); " %}
+                            
+                            {% when 3 %} 
+                            {% assign hideTransIos = "gsap.to('#brandify_transition', { opacity: 0, ease: Power2.easeInOut, duration: durration_end_trans, delay: delay_start, onComplete:hideOverlayiOS});gsap.to('#brandify_transition2', { opacity: 0, ease: Power2.easeInOut, duration: durration_end_trans, delay: delay_start});gsap.to('#brandify_transition3', { opacity: 0, ease: Power2.easeInOut, duration: durration_end_trans, delay: delay_start});gsap.to('#brandify_transition4', { opacity: 0, ease: Power2.easeInOut, duration: durration_end_trans, delay: delay_start});gsap.to('#brandify_transition5', { opacity: 0, ease: Power2.easeInOut, duration: durration_end_trans, delay: delay_start});gsap.to('#brandify_transition6', { opacity: 0, ease: Power2.easeInOut, duration: durration_end_trans, delay: delay_start});" %} 
+                            {% assign hideTrans = "gsap.to('#brandify_transition', { bottom:0, height: '0%', duration: 0, ease: Power2.easeInOut, delay: 0});gsap.to('#brandify_transition', { bottom:0, height: '100%', duration: 0, ease: Power2.easeInOut, delay: 0});gsap.to('#brandify_transition', { bottom:0, height: '0%', duration: durration_end_trans, ease: Power2.easeInOut, delay: 0.3}); gsap.to('#brandify_transition2', { bottom:0, height: '0%', duration: 0, ease: Power2.easeInOut, delay: 0}); gsap.to('#brandify_transition2', { bottom:0, height: '100%', duration: 0, ease: Power2.easeInOut, delay: 0}); gsap.to('#brandify_transition2', { bottom:0, height: '0%', duration: durration_end_trans, ease: Power2.easeInOut, delay: 0.4}); gsap.to('#brandify_transition3', { bottom:0, height: '0%', duration: 0, ease: Power2.easeInOut, delay: 0}); gsap.to('#brandify_transition3', { bottom:0, height: '100%', duration: 0, ease: Power2.easeInOut, delay: 0}); gsap.to('#brandify_transition3', { bottom:0, height: '0%', duration: durration_end_trans, ease: Power2.easeInOut, delay: 0.5}); gsap.to('#brandify_transition4', { bottom:0, height: '0%', duration: 0, ease: Power2.easeInOut, delay: 0}); gsap.to('#brandify_transition4', { bottom:0, height: '100%', duration: 0, ease: Power2.easeInOut, delay: 0}); gsap.to('#brandify_transition4', { bottom:0, height: '0%', duration: durration_end_trans, ease: Power2.easeInOut, delay: 0.6}); gsap.to('#brandify_transition5', { bottom:0, height: '0%', duration: 0, ease: Power2.easeInOut, delay: 0}); gsap.to('#brandify_transition5', { bottom:0, height: '100%', duration: 0, ease: Power2.easeInOut, delay: 0}); gsap.to('#brandify_transition5', { bottom:0, height: '0%', duration: durration_end_trans, ease: Power2.easeInOut, delay: 0.7}); gsap.to('#brandify_transition6', { bottom:0, height: '0%', duration: 0, ease: Power2.easeInOut, delay: 0}); gsap.to('#brandify_transition6', { bottom:0, height: '100%', duration: 0, ease: Power2.easeInOut, delay: 0}); gsap.to('#brandify_transition6', { bottom:0, height: '0%', duration: durration_end_trans, ease: Power2.easeInOut, delay: 0.8});" %} 
+                            {% assign hideTrans2 = "gsap.to('#brandify_transition', { bottom:0, height: '0%', duration: 0, ease: Power4.easeNone, delay: 1.7}); gsap.to('#brandify_transition2', { bottom:0, height: '0%', duration: 0, ease: Power4.easeNone, delay: 1.7}); gsap.to('#brandify_transition3', { bottom:0, height: '0%', duration: 0, ease: Power4.easeNone, delay: 1.7}); gsap.to('#brandify_transition4', { bottom:0, height: '0%', duration: 0, ease: Power4.easeNone, delay: 1.7}); gsap.to('#brandify_transition5', { bottom:0, height: '0%', duration: 0, ease: Power4.easeNone, delay: 1.7}); gsap.to('#brandify_transition6', { bottom:0, height: '0%', duration: 0, ease: Power4.easeNone, delay: 1.7}); " %} 
+                            {% assign showTrans = "gsap.to('#brandify_transition', { bottom:0, height: '100%', duration: durration_end_trans, ease: Power2.easeInOut, delay: 0}); gsap.to('#brandify_transition2', { bottom:0, height: '100%', duration: durration_end_trans, ease: Power2.easeInOut, delay: 0.1}); gsap.to('#brandify_transition3', { bottom:0, height: '100%', duration: durration_end_trans, ease: Power2.easeInOut, delay: 0.2}); gsap.to('#brandify_transition4', { bottom:0, height: '100%', duration: durration_end_trans, ease: Power2.easeInOut, delay: 0.3}); gsap.to('#brandify_transition5', { bottom:0, height: '100%', duration: durration_end_trans, ease: Power2.easeInOut, delay: 0.4}); gsap.to('#brandify_transition6', { bottom:0, height: '100%', duration: durration_end_trans, ease: Power2.easeInOut, delay: 0.5}); " %}
+                        {% endcase %}
+
+
+
+                
+                    {% when 4 %}
+                        {% case transitionPos %} 
+                            {% when 0 %} 
+                            {% assign hideTransIos = "gsap.to('#brandify_transition', { opacity: 0, ease: Power2.easeInOut, duration: durration_end_trans, delay: delay_start, onComplete:hideOverlayiOS});gsap.to('#brandify_transition2', { opacity: 0, ease: Power2.easeInOut, duration: durration_end_trans, delay: delay_start});" %} 
+                            {% assign hideTrans = "gsap.to('#brandify_transition', {width: '0%', duration: 0, ease: Power2.easeInOut, delay: 0}); gsap.to('#brandify_transition', {width: '50%', duration: 0, ease: Power2.easeInOut, delay: 0}); gsap.to('#brandify_transition', {width: '0%', duration: durration_end_trans, ease: Power2.easeInOut, delay: delay_start}); gsap.to('#brandify_transition2', {width: '0%', duration: 0, ease: Power2.easeInOut, delay: 0}); gsap.to('#brandify_transition2', {width: '50%', duration: 0, ease: Power2.easeInOut, delay: 0}); gsap.to('#brandify_transition2', {width: '0%', duration: durration_end_trans, ease: Power2.easeInOut, delay: delay_start}); " %} 
+                            {% assign hideTrans2 = "gsap.to('#brandify_transition', {width: '0%', duration: 0, ease: Power4.easeNone, delay: 1.7}); gsap.to('#brandify_transition2', {width: '0%', duration: 0, ease: Power4.easeNone, delay: 1.7}); " %} 
+                            {% assign showTrans = "gsap.to('#brandify_transition', {width: '50%', duration: durration_end_trans, ease: Power2.easeInOut, delay: 0}); gsap.to('#brandify_transition2', {width: '50%', duration: durration_end_trans, ease: Power2.easeInOut, delay: 0}); " %}
+                            
+                            {% when 1 %} 
+                            {% assign hideTransIos = "gsap.to('#brandify_transition', { opacity: 0, ease: Power2.easeInOut, duration: durration_end_trans, delay: delay_start, onComplete:hideOverlayiOS});gsap.to('#brandify_transition2', { opacity: 0, ease: Power2.easeInOut, duration: durration_end_trans, delay: delay_start});" %} 
+                            {% assign hideTrans = "gsap.to('#brandify_transition', {height: '0%', duration: 0, ease: Power2.easeInOut, delay: 0}); gsap.to('#brandify_transition', {height: '50%', duration: 0, ease: Power2.easeInOut, delay: 0}); gsap.to('#brandify_transition', {height: '0%', duration: durration_end_trans, ease: Power2.easeInOut, delay: delay_start}); gsap.to('#brandify_transition2', {height: '0%', duration: 0, ease: Power2.easeInOut, delay: 0}); gsap.to('#brandify_transition2', {height: '50%', duration: 0, ease: Power2.easeInOut, delay: 0}); gsap.to('#brandify_transition2', {height: '0%', duration: durration_end_trans, ease: Power2.easeInOut, delay: delay_start}); " %} 
+                            {% assign hideTrans2 = "gsap.to('#brandify_transition', {height: '0%', duration: 0, ease: Power4.easeNone, delay: 1.7}); gsap.to('#brandify_transition2', {height: '0%', duration: 0, ease: Power4.easeNone, delay: 1.7}); " %} 
+                            {% assign showTrans = "gsap.to('#brandify_transition', {height: '50%', duration: durration_end_trans, ease: Power2.easeInOut, delay: 0}); gsap.to('#brandify_transition2', {height: '50%', duration: durration_end_trans, ease: Power2.easeInOut, delay: 0}); " %}
+                            
+                            {% when 2 %} 
+                            {% assign hideTransIos = "gsap.to('#brandify_transition', { opacity: 0, ease: Power2.easeInOut, duration: durration_end_trans, delay: delay_start, onComplete:hideOverlayiOS});gsap.to('#brandify_transition2', { opacity: 0, ease: Power2.easeInOut, duration: durration_end_trans, delay: delay_start});" %} 
+                            {% assign hideTrans = "gsap.to('#brandify_transition', {width: '0%', duration: 0, ease: Power2.easeInOut, delay: 0}); gsap.to('#brandify_transition', {width: '50%', duration: 0, ease: Power2.easeInOut, delay: 0}); gsap.to('#brandify_transition', {width: '0%', duration: durration_end_trans, ease: Power2.easeInOut, delay: delay_start}); gsap.to('#brandify_transition2', {width: '0%', duration: 0, ease: Power2.easeInOut, delay: 0}); gsap.to('#brandify_transition2', {width: '50%', duration: 0, ease: Power2.easeInOut, delay: 0}); gsap.to('#brandify_transition2', {width: '0%', duration: durration_end_trans, ease: Power2.easeInOut, delay: delay_start}); " %} 
+                            {% assign hideTrans2 = "gsap.to('#brandify_transition', {width: '0%', duration: 0, ease: Power4.easeNone, delay: 1.7}); gsap.to('#brandify_transition2', {width: '0%', duration: 0, ease: Power4.easeNone, delay: 1.7}); " %} 
+                            {% assign showTrans = "gsap.to('#brandify_transition', {width: '50%', duration: durration_end_trans, ease: Power2.easeInOut, delay: 0}); gsap.to('#brandify_transition2', {width: '50%', duration: durration_end_trans, ease: Power2.easeInOut, delay: 0}); " %}
+                            
+                            {% when 3 %} 
+                            {% assign hideTransIos = "gsap.to('#brandify_transition', { opacity: 0, ease: Power2.easeInOut, duration: durration_end_trans, delay: delay_start, onComplete:hideOverlayiOS});gsap.to('#brandify_transition2', { opacity: 0, ease: Power2.easeInOut, duration: durration_end_trans, delay: delay_start});" %} 
+                            {% assign hideTrans = "gsap.to('#brandify_transition', {height: '0%', duration: 0, ease: Power2.easeInOut, delay: 0}); gsap.to('#brandify_transition', {height: '50%', duration: 0, ease: Power2.easeInOut, delay: 0}); gsap.to('#brandify_transition', {height: '0%', duration: durration_end_trans, ease: Power2.easeInOut, delay: delay_start}); gsap.to('#brandify_transition2', {height: '0%', duration: 0, ease: Power2.easeInOut, delay: 0}); gsap.to('#brandify_transition2', {height: '50%', duration: 0, ease: Power2.easeInOut, delay: 0}); gsap.to('#brandify_transition2', {height: '0%', duration: durration_end_trans, ease: Power2.easeInOut, delay: delay_start}); " %} 
+                            {% assign hideTrans2 = "gsap.to('#brandify_transition', {height: '0%', duration: 0, ease: Power4.easeNone, delay: 1.7}); gsap.to('#brandify_transition2', {height: '0%', duration: 0, ease: Power4.easeNone, delay: 1.7}); " %} 
+                            {% assign showTrans = "gsap.to('#brandify_transition', {height: '50%', duration: durration_end_trans, ease: Power2.easeInOut, delay: 0}); gsap.to('#brandify_transition2', {height: '50%', duration: durration_end_trans, ease: Power2.easeInOut, delay: 0}); " %}
+                        {% endcase %}
+                    
+                    {% endcase %}
+                {% endif %}
+
+                {% if pageTransition > 0 %}
+                    var loadify_el_delay = 0.2;
+                    var loadify_img_delay = 0;
+                {% else %}
+                    {% if fadeOutSpeed == 1 %}
+                        var loadify_el_delay = 0.2;
+                        var loadify_img_delay = 0;
+                    {% else %}
+                        var loadify_el_delay = 0.9;
+                        var loadify_img_delay = 0.7;
+                    {% endif %}
+                {% endif %}
+
+                var duration_start = '1',duration_end = '0.7', delay_end = '0', delay_start = '0.3', durration_end_trans = '1';
+            {% endif %}
+
+            {% if preloaderMode == 1 %} 
+                window.addEventListener('load', function() { 
+            {% else %}
+                setTimeout(() => {
+            {% endif %}
+                {% if preloaderShow == 1 %}
+                    if (sessionStorage.getItem('loadify_loader') == null) {
+                {% elsif preloaderShow == 2 %}
+                    {% if template contains 'product' %}
+                        if (sessionStorage.getItem('loadify_loader_{{ template }}_{{ product.id }}') == null) {
+                    {% else %}
+                        if (sessionStorage.getItem('loadify_loader_{{ template }}') == null) {
+                    {% endif %}
+                {% endif %}
+
+                    {% if litePreloader == 0 %} 
+                        {% if pageTransition > 0 %} {{ hideTrans }} {% endif %}
+                        LoadifyMagic();
+                        gsap.to('#loadify_loader', {opacity: 0, duration: duration_start, delay: loadify_el_delay, onComplete:hideLoadify}); 
+                        gsap.to('#loadify_img', {opacity: 0, duration: duration_start, delay: loadify_img_delay, onComplete:hideLoadify}); 
+                    {% else %}
+                        $('#loadify_loader').fadeOut({{ litePreloaderFadeOut }}, 'linear');
+                    {% endif %}
+
+                {% if preloaderShow == 1 %}
+                    sessionStorage.setItem('loadify_loader', 'true'); }
+                {% elsif preloaderShow == 2 %}
+                    {% if template contains 'product' %}
+                        sessionStorage.setItem('loadify_loader_{{ template }}_{{ product.id }}', 'true'); }
+                    {% else %}
+                        sessionStorage.setItem('loadify_loader_{{ template }}', 'true'); }
+                    {% endif %}
+                {% endif %}
+            {% if preloaderMode == 1 %} 
+                });
+            {% else %}
+                }, {{ preloaderTime }} );
+            {% endif %}
+            
+            {% if litePreloader == 0 %} 
+                function LoadifyMagic()
+                {
+                    let loadify_overlay = document.getElementById('brandify_transition');
+                    let loadify_element = document.getElementById('loadify_loader');
+                    if(loadify_element == null) return;
+                    let loadify_element_img = document.getElementById('loadify_img');
+
+                    const links = document.querySelectorAll('a');
+                    const windowLocationPathnameTrim = removeLastSlash(window.location.pathname);
+                    const excluded_classes = ['XD'];
+                    
+                    links.forEach(link => 
+                    {
+                        const isExcluded = containsExcluded(link.classList, excluded_classes);
+                        const url = link.getAttribute('href');
+                        const isNewWindow = link.getAttribute('target');
+                        const linkPathnameTrim = removeLastSlash(link.pathname);
+
+                        let valid_link = true;
+                        if(url !== null)
+                        {
+                            if(url.indexOf('#') == -1) valid_link = true;
+                            else valid_link = false;
+                        }
+
+                        if (!isNewWindow && !isExcluded && valid_link)
+                        {
+                            link.addEventListener('click', function(event) 
+                            {
+                                if(event.ctrlKey)
+                                {
+                                    //console.log('CTRL Pressed'); 
+                                }
+                                else
+                                {
+                                    {% if endTrans == 1 %}
+                                        event.preventDefault();
+
+                                        loadify_element_img.classList.remove('loadify_animation');
+                                        //document.getElementsByTagName('BODY')[0].style.overflowY = 'hidden';
+
+                                        loadify_element.style.display = '';
+                                        loadify_element_img.style.display = '';
+
+                                        {% if pageTransition > 0 %}
+                                            {% if pageTransitionSound > 0 %}
+                                                {% case pageTransitionSound %}
+                                                    {% when 1 %} let audio = new Audio('{{ 'swoosh1.wav' | asset_url  }}');
+                                                    {% when 2 %} let audio = new Audio('{{ 'swoosh2.wav' | asset_url  }}');
+                                                    {% when 3 %} let audio = new Audio('{{ 'swoosh3.wav' | asset_url  }}');
+                                                {% endcase %}
+                                                audio.volume = 0.2;
+                                                audio.play();
+                                            {% endif %}
+
+                                            {{ showTrans }}
+                                            gsap.to('#loadify_img', {opacity: 1, duration: 0.5, delay: 0.75, onComplete:hideOverlay});
+                                            gsap.to('#loadify_loader', {opacity: 1, duration: 0.5, delay: 0, onComplete:hideOverlay});
+                                            const url = this.getAttribute('href');
+                                        {% else %}
+                                            gsap.to('#loadify_img', {opacity: 1, duration: 0.3, delay: 0.3, onComplete:hideOverlay});
+                                            gsap.to('#loadify_loader', {opacity: 1, duration: 0.3, delay: 0, onComplete:hideOverlay});
+                                            const url = this.getAttribute('href');
+                                        {% endif %}
+
+                                        {% case pageTransition %}
+                                            {% when 0 %} setTimeout(() => window.location.href = url, 0.7 * 1000);
+                                            {% when 1 %} setTimeout(() => window.location.href = url, 1.6 * 1000);
+                                            {% when 2 %} setTimeout(() => window.location.href = url, 1.2 * 1000);
+                                            {% when 3 %} setTimeout(() => window.location.href = url, 1.6 * 1000);
+                                            {% when 4 %} setTimeout(() => window.location.href = url, 1.2 * 1000);
+                                        {% endcase %}
+                                    {% endif %}
+                                }
+                            });
+                        }
+                    });
+                }
+
+
+                function hideLoadify()
+                {
+                    let loadify_element = document.getElementById('loadify_loader');
+                    if(loadify_element == null) return;
+                    let loadify_element_img = document.getElementById('loadify_img');
+
+                    loadify_element.style.display = 'none';
+                    loadify_element_img.style.display = 'none';
+
+                    //document.getElementsByTagName('BODY')[0].style.overflowY = 'visible';
+                }
+
+                function removeLastSlash(str) 
+                {
+                    let retStr = str;
+                    if(str.charAt(str.length - 1) === '/') retStr = str.slice(0, -1);
+                    return retStr;
+                }
+
+                function containsExcluded(class_list, excluded_classes) 
+                {
+                    for (let el of class_list) 
+                    for (let elExcluded of excluded_classes) 
+                    if (el.includes(elExcluded)) return true;
+                    return false;
+                }
+
+                function hideOverlayiOS()
+                {
+                    if(document.getElementById('brandify_transition') !== null) document.getElementById('brandify_transition').remove();
+                    if(document.getElementById('brandify_transition2') !== null) document.getElementById('brandify_transition2').remove();
+                    if(document.getElementById('brandify_transition3') !== null) document.getElementById('brandify_transition3').remove();
+                    if(document.getElementById('brandify_transition4') !== null) document.getElementById('brandify_transition4').remove();
+                    if(document.getElementById('brandify_transition5') !== null) document.getElementById('brandify_transition5').remove();
+                    if(document.getElementById('brandify_transition6') !== null) document.getElementById('brandify_transition6').remove();
+                }
+
+                function hideOverlay()
+                {
+                    {% if pageTransition > 0 %} {{ hideTrans2 }} {% endif %}
+                    gsap.to('#loadify_loader', {opacity: 0, duration: 1, delay: 1.6, onComplete:hideLoadify}); 
+                    gsap.to('#loadify_img', {opacity: 0, duration: 1, delay: 1.6, onComplete:hideLoadify});
+                }
+            {% endif %}
+        </script>
+    
+        <script>
+            if(window.frameElement)
+            { 
+                if(document.getElementById('brandify_transition') !== null) document.getElementById('brandify_transition').remove();
+                if(document.getElementById('brandify_transition2') !== null) document.getElementById('brandify_transition2').remove();
+                if(document.getElementById('brandify_transition3') !== null) document.getElementById('brandify_transition3').remove();
+                if(document.getElementById('brandify_transition4') !== null) document.getElementById('brandify_transition4').remove();
+                if(document.getElementById('brandify_transition5') !== null) document.getElementById('brandify_transition5').remove();
+                if(document.getElementById('brandify_transition6') !== null) document.getElementById('brandify_transition6').remove();
+                if(document.getElementById('loadify_loader') !== null) document.getElementById('loadify_loader').remove();
+            } 
+            if(Shopify.designMode || Shopify.inspectMode)
+            { 
+                if(document.getElementById('brandify_transition') !== null) document.getElementById('brandify_transition').remove();
+                if(document.getElementById('brandify_transition2') !== null) document.getElementById('brandify_transition2').remove();
+                if(document.getElementById('brandify_transition3') !== null) document.getElementById('brandify_transition3').remove();
+                if(document.getElementById('brandify_transition4') !== null) document.getElementById('brandify_transition4').remove();
+                if(document.getElementById('brandify_transition5') !== null) document.getElementById('brandify_transition5').remove();
+                if(document.getElementById('brandify_transition6') !== null) document.getElementById('brandify_transition6').remove();
+                if(document.getElementById('loadify_loader') !== null) document.getElementById('loadify_loader').remove();
+            }
+        </script>
+    

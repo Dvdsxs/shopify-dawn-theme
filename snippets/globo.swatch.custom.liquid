@@ -1,0 +1,42 @@
+<script>
+  window.addEventListener('Globo.swatch.loaded',function(){
+  	document.querySelectorAll('.globo-swatch-product-detail .swatch--gl .name-option').forEach(input => {
+		if (input.getAttribute('data-name') == "Necklace"){
+          input.closest('.swatch--gl').classList.add('swatch-custom')
+        }
+	})
+  })
+</script>
+
+{% style %}
+  #shopify-section-template--19515965309259__main .globo-swatch-product-detail .swatch--gl.swatch-custom ul.g-variant-color-detail li label {
+    height: 38px !important;
+    width: 38px !important;
+    border-radius: 50% !important;
+  }
+
+  #shopify-section-template--19515965309259__main .globo-swatch-product-detail .swatch--gl.swatch-custom li label.globo-detail-style-square.globo-detail-border-style-double:before {
+    border-radius: 50% !important;
+  }
+{% endstyle %}
+<script>
+  window.addEventListener('Globo.swatch.loaded',function(){
+  	document.querySelectorAll('.globo-swatch-product-detail .swatch--gl .name-option').forEach(input => {
+		if (input.getAttribute('data-name') == "Farben"){
+          input.closest('.swatch--gl').classList.add('swatch-custom')
+        }
+	})
+  })
+</script>
+
+{% style %}
+  #shopify-section-template--19783259980107__main .globo-swatch-product-detail .swatch--gl.swatch-custom ul.g-variant-color-detail li label {
+    height: 38px !important;
+    width: 38px !important;
+    border-radius: 50% !important;
+  }
+
+  #shopify-section-template--19783259980107__main .globo-swatch-product-detail .swatch--gl.swatch-custom li label.globo-detail-style-square.globo-detail-border-style-double:before {
+    border-radius: 50% !important;
+  }
+{% endstyle %}

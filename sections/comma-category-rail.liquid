@@ -1,0 +1,48 @@
+<div class="comma comma-rail">
+  <div class="comma-rail__scroll">
+    {% for block in section.blocks %}
+      {%- assign coll = collections[block.settings.collection] -%}
+      <a href="{% if block.settings.collection != blank %}{{ coll.url }}{% else %}#{% endif %}" class="comma-rail__item" {{ block.shopify_attributes }}>
+        <div class="comma-rail__img">
+          {% if block.settings.image %}
+            {{ block.settings.image | image_url: width: 400 | image_tag: loading:'lazy', widths:'200,300,400', sizes:'(min-width:750px) 14vw, 28vw', alt: block.settings.label }}
+          {% elsif coll.featured_image %}
+            {{ coll.featured_image | image_url: width: 400 | image_tag: loading:'lazy', widths:'200,300,400', sizes:'(min-width:750px) 14vw, 28vw', alt: block.settings.label }}
+          {% endif %}
+        </div>
+        <div class="comma-rail__label">{{ block.settings.label | default: coll.title }}</div>
+      </a>
+    {% endfor %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Comma Category Rail",
+  "tag": "section",
+  "max_blocks": 12,
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Category",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Label", "default": "New Arrivals" },
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "collection", "id": "collection", "label": "Collection" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Comma Category Rail",
+      "blocks": [
+        { "type": "item", "settings": { "label": "New Arrivals" } },
+        { "type": "item", "settings": { "label": "Bestsellers" } },
+        { "type": "item", "settings": { "label": "Jerseys" } },
+        { "type": "item", "settings": { "label": "T-Shirts" } },
+        { "type": "item", "settings": { "label": "Legends" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

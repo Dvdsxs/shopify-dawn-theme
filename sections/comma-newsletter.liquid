@@ -1,0 +1,39 @@
+<section class="comma comma-newsletter">
+  <div class="comma-newsletter__inner">
+    <h2 class="comma-newsletter__title">{{ section.settings.title }}</h2>
+    {% if section.settings.text != blank %}
+      <p class="comma-newsletter__text">{{ section.settings.text }}</p>
+    {% endif %}
+
+    {% form 'customer', class: 'comma-newsletter__form' %}
+      <input type="hidden" name="contact[tags]" value="newsletter">
+      <input
+        class="comma-newsletter__input"
+        type="email"
+        name="contact[email]"
+        placeholder="{{ section.settings.placeholder }}"
+        required
+        autocomplete="email">
+      <button type="submit" class="comma-newsletter__btn" name="commit">
+        {{ section.settings.button_text }}
+      </button>
+      {% if form.posted_successfully? %}
+        <p class="comma-newsletter__success">Thanks — you're on the list.</p>
+      {% endif %}
+    {% endform %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Comma Newsletter",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Title", "default": "Join the comma club" },
+    { "type": "textarea", "id": "text", "label": "Text", "default": "Early drops, restocks and Legends releases. Straight to your inbox." },
+    { "type": "text", "id": "placeholder", "label": "Placeholder", "default": "Your email address" },
+    { "type": "text", "id": "button_text", "label": "Button text", "default": "Subscribe" }
+  ],
+  "presets": [{ "name": "Comma Newsletter" }]
+}
+{% endschema %}
